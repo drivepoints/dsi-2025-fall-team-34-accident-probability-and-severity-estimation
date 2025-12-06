@@ -66,23 +66,26 @@ Each stage saves intermediate output needed by the next step. All data should be
 
 ## Methodology 
 1. **Data Sources**
-- FARS 2016 - 2023: accident, vehicle, and person tables
+- FARS 2016 - 2023: accident, vehicle, and person tables 
+    - (FARS data contains fatal crashes nationally)
 - CRSS 2016 - 2023: accident, vehicle, and person tables 
+    - CRSS data contains a sample of both fatal and non-fatal crashes nationally. 
 - Georgia AADT by Signal ID
-FARS data contains fatal crashes nationally. 
-CRSS data contains a sample of both fatal and non-fatal crashes nationally. 
+
 Accident, vehicle, and person provides a comprehensive description about the crash containing information on location, people and vehicle involved, environmental conditions, and important pre-crash movements. 
 
 2. **Data Cleaning, Standardization, and Merging** 
+
 We handled mainly missing values, filter out unrealistic values, and recoded columns and entries so that it is consistent across all years. We then merged across tables (accident, people, and vehicles) and years ensure all entries are unique. A SQLite pipeline was built when completing this. Finally, we combined the CRSS and FARS data together to create a master table that will become the input of our model. 
 
 3. **Road/Intersection Matching**
+
 As FARS provides longtitude and latitude data for each crash, we matched the location to actual roads on OpenStreetMap to gain context. After we found Georgia's AADT data by signals online, we were able to scrape that information and match each crash in Georgia against specific intersections traffic count to get its exposure. We were also able to aggregate by days and day of week.
 
 4. **Modeling Approach**
+
 (1) Likelihood Ratio Modeling 
-We applied this model on our cleaned CRSS data to calculate the relative crash risk between left/right/straight turning movements.
-We computed the likelihood ratio for left/right/straight movements under different conditions such as weather, visibility, time of day, and etc. We were able to use turning ratio from Georgia as exposure adjustment for this model. We run this model on data with all vehicles and on trucks specifically. 
+We applied this model on our cleaned CRSS data to calculate the relative crash risk. We computed the likelihood ratio for left/right/straight movements under different conditions such as weather, visibility, time of day, and etc. and were able to use turning ratio from Georgia as exposure adjustment for this model. This model was applied on data with all vehicles and on trucks specifically. 
 
 (2) Turning Ratio
 We used Georgia AADT data to calculate exposure estimates (left/right/through proportions) aggregated by intersection type (3-way and 4-way) and days/day of week. The turning ratios were then used to adjust the likelihood ratio model to obtain crash risk.
