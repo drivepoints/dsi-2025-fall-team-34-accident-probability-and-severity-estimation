@@ -110,15 +110,15 @@ The folder ml_pipeline implements a machine learning framework to estimate the p
 ### Model Architecture
 This project solves the challenge where Traffic Volume (the primary driver of accidents) is known during training but unavailable during real-time inference.
 
-Stage 1: Volume Imputation (XGBoost Regressor)
-Input: Hour, Day of Week, Month, Intersection Type, Maneuver Type.
-Output: Predicted Traffic Volume.
-Goal: Learn the temporal and geometric patterns of traffic flow.
+1. Stage 1: Volume Imputation (XGBoost Regressor)
+- Input: Hour, Day of Week, Month, Intersection Type, Maneuver Type.
+- Output: Predicted Traffic Volume.
+- Goal: Learn the temporal and geometric patterns of traffic flow.
 
-Stage 2: Risk Classification (XGBoost Classifier)
-Input: Hour, Day of Week, Month, Intersection Type, Maneuver Type, Predicted Volume (from Stage 1).
-Output: Probability of Fatal Accident.
-Technique: Weighted training (Safe Passage vs. Accident) + Isotonic Calibration.
+2. Stage 2: Risk Classification (XGBoost Classifier)
+- Input: Hour, Day of Week, Month, Intersection Type, Maneuver Type, Predicted Volume (from Stage 1).
+- Output: Probability of Fatal Accident.
+- Technique: Weighted training (Safe Passage vs. Accident) + Isotonic Calibration.
 
 ### Installation & Usage
 
@@ -145,12 +145,12 @@ from src.inference import AccidentPredictor
 predictor = AccidentPredictor()
 
 # Predict risk for a Left Turn at a 4-way intersection
-# on October on Monday at 20:00 p.m. 
+# on October on a Monday at 20:00 p.m. 
 vol, risk = predictor.predict(
     hour=20, 
     day_of_week=1, 
     month=8, 
-    intersection_type='4-way', 
+    intersection_type='four-way', 
     maneuver='left'
 )
 
