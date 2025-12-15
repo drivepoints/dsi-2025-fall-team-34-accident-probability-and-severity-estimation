@@ -46,6 +46,20 @@ project/
 │   ├── likelihood.py               # modeling likelihood ratios for all crashes & trucks
 │   ├── turning_ratio.ipynb  
 │   └── acc_prob_model.ipynb        # model crash probabilities using linear and logistic regression
+├── ml_pipeline/                        # Two-stage ML pipeline for Georgia Fatal Accidents Estimation
+│   ├── data/                           # Minimal datasets for running the ml pipeline
+│   │   ├── Export.csv                  # Georgia latitude / longitude data for SignalID
+│   │   ├── fars_combined.csv           # Harmonized FARS 2016 - 2023 data
+│   │   └── signal_hourly_combined.csv  # Sample data from Georgia traffic volume May 1st - Nov 1st 2025
+│   ├── models/                         # Folder to save information from trained models
+│   └── src/
+│   │   ├── data_loader.py              # Script to process data and load information
+│   │   ├── features.py                 # Script to calculate feautures based on a dataframe
+│   │   ├── inference.py                # Script to predict fatal accident probabilities based on trained models
+│   │   ├── train_risk.py               # Script to train fatal accident probabilities for inference
+│   │   └── train_volume.py             # Script to train traffic volume for inference
+│   ├── requirements.txt                # Python libraries required for ml pipeline to run 
+│   └── experiments.ipynb               # Notebook to run ml pipeline and test some examples
 └── README.md
 ```
 
@@ -90,7 +104,58 @@ We applied this model on our cleaned CRSS data to calculate the relative crash r
 (2) Turning Ratio
 We used Georgia AADT data to calculate exposure estimates (left/right/through proportions) aggregated by intersection type (3-way and 4-way) and days/day of week. The turning ratios were then used to adjust the likelihood ratio model to obtain crash risk.
 
-(3) Crash Probabilities
+## ML pipeline
+The folder ml_pipeline implements a machine learning framework to estimate the probability of fatal traffic accidents at intersections in Georgia. By integrating high-fidelity traffic volume data from the Georgia Department of Transportation (GDOT) with fatal accident records from the Fatality Analysis Reporting System (FARS), this model calculates risk profiles for specific vehicle maneuvers (Left Turn, Right Turn, Straight) based on time of day, seasonality, and intersection geometry.
+
+### Model Architecture
+This project solves the challenge where Traffic Volume (the primary driver of accidents) is known during training but unavailable during real-time inference.
+
+Stage 1: Volume Imputation (XGBoost Regressor)
+Input: Hour, Day of Week, Month, Intersection Type, Maneuver Type.
+Output: Predicted Traffic Volume.
+Goal: Learn the temporal and geometric patterns of traffic flow.
+
+Stage 2: Risk Classification (XGBoost Classifier)
+Input: Hour, Day of Week, Month, Intersection Type, Maneuver Type, Predicted Volume (from Stage 1).
+Output: Probability of Fatal Accident.
+Technique: Weighted training (Safe Passage vs. Accident) + Isotonic Calibration.
+
+### Installation & Usage
+
+1. Prerequisites
+
+Ensure you have Python 3.8+ installed.
+
+```
+git clone https://github.com/drivepoints/dsi-2025-fall-team-34-accident-probability-and-severity-estimation.git
+cd ml_pipeline
+pip install -r requirements.txt
+```
+
+2. Running the Pipeline
+
+To train the models and test inference you should run experiments.ipynb
+
+3. Using for Inference
+
+To use the trained model in your own application:
+```
+from src.inference import AccidentPredictor
+
+predictor = AccidentPredictor()
+
+# Predict risk for a Left Turn at a 4-way intersection
+# on October on Monday at 20:00 p.m. 
+vol, risk = predictor.predict(
+    hour=20, 
+    day_of_week=1, 
+    month=8, 
+    intersection_type='4-way', 
+    maneuver='left'
+)
+
+print(f"Risk Probability: {risk:.8f}")
+```
 
 ## Authors and Contacts
 **Brigid Christine Meisenbacher** - bcm2167@columbia.edu
