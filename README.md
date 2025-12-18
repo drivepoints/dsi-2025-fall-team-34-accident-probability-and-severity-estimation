@@ -11,7 +11,6 @@ The repository includes:
 - Output and Models:
     1. Likelihood Ratio - used when exposure(traffic volume) is unknown 
     2. Turning Ratio - estimates left/through/right exposures using Georgia data 
-    3. Crash Probabilities
 
 ## Repository Structure
 ```
@@ -106,6 +105,12 @@ We used Georgia AADT data to calculate exposure estimates (left/right/through pr
 
 ## ML pipeline
 The folder ml_pipeline implements a machine learning framework to estimate the probability of fatal traffic accidents at intersections in Georgia. By integrating high-fidelity traffic volume data from the Georgia Department of Transportation (GDOT) with fatal accident records from the Fatality Analysis Reporting System (FARS), this model calculates risk profiles for specific vehicle maneuvers (Left Turn, Right Turn, Straight) based on time of day, seasonality, and intersection geometry.
+
+### Data
+The minimal datasets required for the pipeline to run are the following:
+1. Export.csv: Contains information about Georgia latitude / longitude data for SignalID (already on Repo)
+2. fars_combined.csv: Harmonized FARS 2016 - 2023 data. This file is created by running combine_cleaned_fars_crss.ipynb 
+3. signal_hourly_combined.csv: Sample data from Georgia traffic volume May 1st - Nov 1st 2025. This file is created by running signal_classify_hourly_split.ipynb
 
 ### Model Architecture
 This project solves the challenge where Traffic Volume (the primary driver of accidents) is known during training but unavailable during real-time inference.
