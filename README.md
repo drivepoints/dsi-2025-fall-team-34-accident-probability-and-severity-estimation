@@ -43,7 +43,8 @@ project/
 │   ├── signal_aggregation/         # created when aggregation.ipynb notebook runs
 │   └── outputs/
 ├── models/
-│   ├── likelihood.py               # modeling likelihood ratios for all crashes & trucks
+│   ├── LR.py                       # modeling likelihood ratios for all crashes & trucks
+│   ├── LR_exposure_adjusted.py     # modeling likelihood ratios for all crashes & trucks
 │   ├── turning_ratio.ipynb  
 │   └── acc_prob_model.ipynb        # model crash probabilities using linear and logistic regression
 ├── ml_pipeline/                        # Two-stage ML pipeline for Georgia Fatal Accidents Estimation
