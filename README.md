@@ -36,6 +36,10 @@ project/
 │   │   ├── signal_aggregation.ipynb
 │   │   ├── gdot_signal_scrape.ipynb
 │   │   └── match_signal_traffic.ipynb
+│   ├── Signal_aggregate_classify/   # Signal traffic aggregation, intersection classification, and turning ratio computation
+│   │   ├── aggregate_drop/          # Aggregate signals and drop non-decomposable movements
+│   │   ├── aggregate_split/         # Aggregate signals with split movements retained
+│   │   └── hourly_split/            # Hourly signal aggregation with split movements
 ├── data/                           
 │   ├── FARS/                       # Download FARS 2016 - 2023 data
 │   ├── CRSS/                       # Download CRSS 2016 - 2023 data
