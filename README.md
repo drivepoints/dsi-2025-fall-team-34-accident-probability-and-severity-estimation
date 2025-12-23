@@ -76,7 +76,7 @@ CRSS - https://www.nhtsa.gov/crash-data-systems/crash-report-sampling-system
 
 1. **Data Cleaning** - Run folders fars_clean and crss_clean
 2. **Merging FARS and CRSS**  - Run folder combined_clean 
-3. **Road-level Matching and Signal-ID Matching (Georgia)** - Run folder georgia_aadt_match 
+3. **Road-level Matching and Signal-ID Matching (Georgia)** - Run folder georgia
 4. **EDAV** - Run folder edav
 5. **Models** - Run folder models
 
