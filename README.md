@@ -31,7 +31,7 @@ project/
 │   │   ├── truck_eda_model.ipynb
 │   │   └── all_eda_model.ipynb
 │   ├── georgia/
-│   │   ├── gdot_signal_api.ipynb              # API call by signal and dates for GDAT turn maneuver data
+│   │   ├── gdot_signal_api.ipynb              # API call by signal and dates for GDOT turn maneuver data
 │   │   ├── gdot_signal_scrape.ipynb           # Selenium alternative to API script
 │   │   ├── georgia_traffic_crashrate.ipynb    # Example crash rates using traffic exposure data
 │   │   └── match_signal_traffic.ipynb         # Matching of non-zero crash rates from previous script to specific traffic signals
